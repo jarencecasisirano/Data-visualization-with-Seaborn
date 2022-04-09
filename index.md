@@ -54,7 +54,7 @@ sns.lineplot(data=spotify_data['Despacito'], label="Despacito")
 plt.xlabel("Date")
 ```
 
-## [Bar chart and Heatmaps](https://www.kaggle.com/code/alexisbcook/bar-charts-and-heatmaps/tutorial)
+## [Bar charts and Heatmaps](https://www.kaggle.com/code/alexisbcook/bar-charts-and-heatmaps/tutorial)
 We import relevant libraries then access the data.
 ```python
 import pandas as pd
@@ -101,4 +101,49 @@ sns.heatmap(data=flight_data, annot=True)
 
 # Add label for horizontal axis
 plt.xlabel("Airline")
+```
+
+## [Scatter Plots](https://www.kaggle.com/code/alexisbcook/scatter-plots)
+To create scatter plots, we import relevant libraries and load the data. We inspect the data using the `.head()` command then create a simple scatter plot using `sns.scatterplot()`.
+```python
+import pandas as pd
+pd.plotting.register_matplotlib_converters()
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+
+# Path of the file to read
+insurance_filepath = "../input/insurance.csv"
+
+# Read the file into a variable insurance_data
+insurance_data = pd.read_csv(insurance_filepath)
+
+# Inspect first few rows
+insurance_data.head()
+
+# Scatter plot
+sns.scatterplot(x=insurance_data['bmi'], y=insurance_data['charges'])
+```
+
+Sometimes, we would want to add a **regression line** or best-fit line. We do this by changing using `sns.regplot()`.
+```python
+# Scatter plot with regression line
+sns.regplot(x=insurance_data['bmi'], y=insurance_data['charges'])
+```
+
+### Color-coded Scatter Plots
+Taking this a step further, we can use color-coded scatter plots to show relationsips between three variables! We do this by adding a `hue=''` parameter. In addition, we can use `sns.lmplot()` to add regression lines corresponding to the third variable.
+```python
+# Color-coded scatter plots
+sns.scatterplot(x=insurance_data['bmi'], y=insurance_data['charges'], hue=insurance_data['smoker'])
+
+# Color-coded scatter plots with regression line 
+sns.lmplot(x="bmi", y="charges", hue="smoker", data=insurance_data)
+```
+
+### Categorical Scatter Plots
+Categorical scatter plots feature a categorical variable on one of the main axes. For this, we use the `sns.swarmplot()`.
+```python
+sns.swarmplot(x=insurance_data['smoker'],
+              y=insurance_data['charges'])
 ```
