@@ -147,3 +147,105 @@ Categorical scatter plots feature a categorical variable on one of the main axes
 sns.swarmplot(x=insurance_data['smoker'],
               y=insurance_data['charges'])
 ```
+
+## [Histograms and Density Plots](https://www.kaggle.com/code/alexisbcook/distributions)
+We import relevant libraries, then we load and examine the data.
+``` python
+import pandas as pd
+pd.plotting.register_matplotlib_converters()
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+
+# Path of the file to read
+iris_filepath = "../input/iris.csv"
+
+# Read the file into a variable iris_data
+iris_data = pd.read_csv(iris_filepath, index_col="Id")
+
+# Print the first 5 rows of the data
+iris_data.head()
+```
+
+### Histograms
+To create histograms, we use the `sns.distplot` command. The parameter `a=` dictates the column to plot while `kde=False` is something we'll always provide when creating a histogram, as leaving it out will create a slightly different plot.
+```python
+# Histogram 
+sns.distplot(a=iris_data['Petal Length (cm)'], kde=False)
+```
+
+### Density Plots
+**Kernel density estimate (KDE)** plot is a smoothed histogram. To create a KDE plot, we use the `sns.kdeplot` command. Setting `shade=True` colors the area below the curve (and `data=` has identical functionality as when we made the histogram above).
+```python
+# KDE plot 
+sns.kdeplot(data=iris_data['Petal Length (cm)'], shade=True)
+```
+
+We can create a **two-dimensional (2D) KDE** plot with the `sns.jointplot` command.
+```python
+# 2D KDE plot
+sns.jointplot(x=iris_data['Petal Length (cm)'], y=iris_data['Sepal Width (cm)'], kind="kde")
+```
+
+### Color-Coded Histograms and Density Plots
+To create color-coded plots, we break the dataset into separate files.
+
+#### Color-Coded Histograms
+We create a different histogram for each by using the `sns.distplot` command. We use `label=` parameter to set how each histogram will appear in the legend. To force the legend to show (for any plot type), we can always use `plt.legend()`.
+```python
+# Paths of the files to read
+iris_set_filepath = "../input/iris_setosa.csv"
+iris_ver_filepath = "../input/iris_versicolor.csv"
+iris_vir_filepath = "../input/iris_virginica.csv"
+
+# Read the files into variables 
+iris_set_data = pd.read_csv(iris_set_filepath, index_col="Id")
+iris_ver_data = pd.read_csv(iris_ver_filepath, index_col="Id")
+iris_vir_data = pd.read_csv(iris_vir_filepath, index_col="Id")
+
+# Print the first 5 rows of the Iris versicolor data
+iris_ver_data.head()
+
+# Histograms for each species
+sns.distplot(a=iris_set_data['Petal Length (cm)'], label="Iris-setosa", kde=False)
+sns.distplot(a=iris_ver_data['Petal Length (cm)'], label="Iris-versicolor", kde=False)
+sns.distplot(a=iris_vir_data['Petal Length (cm)'], label="Iris-virginica", kde=False)
+
+# Add title
+plt.title("Histogram of Petal Lengths, by Species")
+
+# Force legend to appear
+plt.legend()
+```
+
+#### Color-Coded Density Plots
+We can also create a KDE plot for each by using `sns.kdeplot`. Again, `label=` is used to set the values in the legend.
+```python
+# KDE plots for each species
+sns.kdeplot(data=iris_set_data['Petal Length (cm)'], label="Iris-setosa", shade=True)
+sns.kdeplot(data=iris_ver_data['Petal Length (cm)'], label="Iris-versicolor", shade=True)
+sns.kdeplot(data=iris_vir_data['Petal Length (cm)'], label="Iris-virginica", shade=True)
+
+# Add title
+plt.title("Distribution of Petal Lengths, by Species")
+```
+
+## [Choosing Plot Types and Custom Styles](https://www.kaggle.com/code/alexisbcook/choosing-plot-types-and-custom-styles/tutorial)
+It's tricky to decide how to best tell the story behind your data and charts can help with that. Charts can be categorized into three:
+- **Trends** - A trend is defined as a pattern of change.
+	- `sns.lineplot` - **Line charts** are best to show trends over a period of time, and multiple lines can be used to show trends in more than one group.
+- **Relationship** - There are many different chart types that you can use to understand relationships between variables in your data.
+  - `sns.barplot` - **Bar charts** are useful for comparing quantities corresponding to different groups.
+	- `sns.heatmap` - **Heatmaps** can be used to find color-coded patterns in tables of numbers.
+	- `sns.scatterplot` - **Scatter plots** show the relationship between two continuous variables; if color-coded, we can also show the relationship with a third categorical variable.
+	- `sns.regplot` - Including a **regression line** in the scatter plot makes it easier to see any linear relationship between two variables.
+	- `sns.lmplot` - This command is useful for drawing multiple regression lines, if the scatter plot contains multiple, color-coded groups.
+	- `sns.swarmplot` - **Categorical scatter plots** show the relationship between a continuous variable and a categorical variable.
+- **Distribution** - We visualize distributions to show the possible values that we can expect to see in a variable, along with how likely they are.
+	- `sns.distplot` - **Histograms** show the distribution of a single numerical variable.
+	- `sns.kdeplot` - **KDE plots (or 2D KDE plots)** show an estimated, smooth distribution of a single numerical variable (or two numerical variables).
+	- `sns.jointplot` - This command is useful for simultaneously displaying a 2D KDE plot with the corresponding KDE plots for each individual variable.
+
+The categories above are summarized in the figure below:
+
+![image1](https://github.com/jarencecasisirano/Data-visualization-with-Seaborn/blob/main/assets/2VmgDnF.png)
