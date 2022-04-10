@@ -249,3 +249,27 @@ It's tricky to decide how to best tell the story behind your data and charts can
 The categories above are summarized in the figure below:
 
 ![image1](https://github.com/jarencecasisirano/Data-visualization-with-Seaborn/blob/main/assets/2VmgDnF.png)
+
+### Using custom styles
+While the default style of the plots looks really nice, often, it will be useful to customize how our plot looks. Thankfully, this can be accomplished by just adding a few more lines of code.
+```python
+import pandas as pd
+pd.plotting.register_matplotlib_converters()
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+
+# Path of the file to read
+spotify_filepath = "../input/spotify.csv"
+
+# Read the file into a variable spotify_data
+spotify_data = pd.read_csv(spotify_filepath, index_col="Date", parse_dates=True)
+
+# Seaborn has five different themes: (1)"darkgrid", (2)"whitegrid", (3)"dark", (4)"white", and (5)"ticks"
+# Change the style of the figure to the "dark" theme
+sns.set_style("dark")
+
+# Line chart 
+plt.figure(figsize=(12,6))
+sns.lineplot(data=spotify_data)
+```
